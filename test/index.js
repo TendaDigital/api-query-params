@@ -289,6 +289,18 @@ test('projection (custom key)', t => {
   t.deepEqual(res.projection, { a: 1, b: 1, c: 1 });
 });
 
+test('populate simple (comma-separated)', t => {
+  const res = aqp('populate=users,members');
+  t.truthy(res);
+  t.deepEqual(res.populate, ['users', 'members']);
+});
+
+test('populate simple (query parsed)', t => {
+  const res = aqp({ populate : ['users', 'members']});
+  t.truthy(res);
+  t.deepEqual(res.populate, ['users', 'members']);
+});
+
 test('sort', t => {
   const res = aqp('sort=a,+b,-c');
   t.truthy(res);

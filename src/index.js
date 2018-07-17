@@ -180,11 +180,19 @@ function getFilter(filter, params, options) {
     }, parsedFilter);
 }
 
+function getPopulation(populate, params, options) {
+  const join = params['populate'] ? `${'populate'}=${params['populate']}` : populate;
+  // Separate key, operators and value
+  const [, prefix, key, op, value] = join.match(/(!?)([^><!=]+)([><]=?|!?=|)(.*)/);
+  return parseValue(value, key, options);
+}
+
 const operators = [
   { operator: 'projection', method: getProjection, defaultKey: 'fields' },
   { operator: 'sort', method: getSort, defaultKey: 'sort' },
   { operator: 'skip', method: getSkip, defaultKey: 'skip' },
   { operator: 'limit', method: getLimit, defaultKey: 'limit' },
+  { operator: 'populate', method: getPopulation, defaultKey: 'populate' },
   { operator: 'filter', method: getFilter, defaultKey: 'filter' },
 ];
 
